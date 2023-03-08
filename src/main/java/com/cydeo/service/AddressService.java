@@ -1,6 +1,7 @@
 package com.cydeo.service;
 
 import com.cydeo.dto.AddressDTO;
+import com.cydeo.dto.WeatherDTO;
 
 import java.util.List;
 
@@ -13,5 +14,7 @@ public interface AddressService {
     AddressDTO update(AddressDTO addressDTO) throws Exception;
 
     AddressDTO create(AddressDTO addressDTO) throws Exception;
+
+    WeatherDTO getCurrentWeather(String city);
 
 }

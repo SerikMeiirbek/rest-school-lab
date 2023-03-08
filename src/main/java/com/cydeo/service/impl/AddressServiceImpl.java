@@ -1,10 +1,13 @@
 package com.cydeo.service.impl;
 
+import com.cydeo.client.WeatherAPIClient;
 import com.cydeo.dto.AddressDTO;
+import com.cydeo.dto.WeatherDTO;
 import com.cydeo.entity.Address;
 import com.cydeo.mapper.MapperUtil;
 import com.cydeo.repository.AddressRepository;
 import com.cydeo.service.AddressService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,10 +19,15 @@ public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
     private final MapperUtil mapperUtil;
+    private final WeatherAPIClient weatherAPIClient;
 
-    public AddressServiceImpl(AddressRepository addressRepository, MapperUtil mapperUtil) {
+    @Value("${access_key}")
+    private String accessKey;
+
+    public AddressServiceImpl(AddressRepository addressRepository, MapperUtil mapperUtil, WeatherAPIClient weatherAPIClient) {
         this.addressRepository = addressRepository;
         this.mapperUtil = mapperUtil;
+        this.weatherAPIClient = weatherAPIClient;
     }
 
     @Override
@@ -66,6 +74,11 @@ public class AddressServiceImpl implements AddressService {
 
         return mapperUtil.convert(addressToSave, new AddressDTO());
 
+    }
+
+    @Override
+    public WeatherDTO getCurrentWeather(String city) {
+        return weatherAPIClient.getCurrentWeather(accessKey, city);
     }
 
 }
